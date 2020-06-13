@@ -4,9 +4,6 @@
 //! *[See also the `f32` primitive type](../../std/primitive.f32.html).*
 //!
 //! Mathematically significant numbers are provided in the `consts` sub-module.
-//!
-//! Although using these constants won’t cause compilation warnings,
-//! new code should use the associated constants directly on the primitive type.
 
 #![stable(feature = "rust1", since = "1.0.0")]
 #![allow(missing_docs)]
@@ -19,12 +16,16 @@ use crate::sys::cmath;
 #[stable(feature = "rust1", since = "1.0.0")]
 pub use core::f32::consts;
 #[stable(feature = "rust1", since = "1.0.0")]
+#[allow(deprecated_in_future)]
 pub use core::f32::{DIGITS, EPSILON, MANTISSA_DIGITS, RADIX};
 #[stable(feature = "rust1", since = "1.0.0")]
+#[allow(deprecated_in_future)]
 pub use core::f32::{INFINITY, MAX_10_EXP, NAN, NEG_INFINITY};
 #[stable(feature = "rust1", since = "1.0.0")]
+#[allow(deprecated_in_future)]
 pub use core::f32::{MAX, MIN, MIN_POSITIVE};
 #[stable(feature = "rust1", since = "1.0.0")]
+#[allow(deprecated_in_future)]
 pub use core::f32::{MAX_EXP, MIN_10_EXP, MIN_EXP};
 
 #[cfg(not(test))]
