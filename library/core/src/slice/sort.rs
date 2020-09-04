@@ -180,6 +180,7 @@ where
 
 /// Sorts `v` using heapsort, which guarantees *O*(*n* \* log(*n*)) worst-case.
 #[cold]
+#[unstable(feature = "sort_internals", reason = "internal to sort module", issue = "none")]
 pub fn heapsort<T, F>(v: &mut [T], is_less: &mut F)
 where
     F: FnMut(&T, &T) -> bool,
