@@ -8,18 +8,6 @@
 
 #![stable(feature = "rust1", since = "1.0.0")]
 
-// How this module is organized.
-//
-// The library infrastructure for slices is fairly messy. There's
-// a lot of stuff defined here. Let's keep it clean.
-//
-// The layout of this file is thus:
-//
-// * Inherent methods. This is where most of the slice API resides.
-// * Implementations of a few common traits with important slice ops.
-// * The `raw` and `bytes` submodules.
-// * Boilerplate trait implementations.
-
 use crate::cmp::Ordering::{self, Equal, Greater, Less};
 use crate::intrinsics::assume;
 use crate::marker::{self, Copy};
@@ -84,10 +72,6 @@ pub use sort::heapsort;
 
 #[stable(feature = "slice_get_slice", since = "1.28.0")]
 pub use index::SliceIndex;
-
-//
-// Extension traits
-//
 
 #[lang = "slice"]
 #[cfg(not(test))]
