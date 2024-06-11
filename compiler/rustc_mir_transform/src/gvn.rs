@@ -410,24 +410,24 @@ impl<'body, 'tcx> VnState<'body, 'tcx> {
                     };
                     let ptr_imm = Immediate::new_pointer_with_meta(data, meta, &self.ecx);
                     ImmTy::from_immediate(ptr_imm, ty).into()
-                // } else if matches!(kind, AggregateTy::Array) {
-                //     let mut mplace = None;
-                //     let alloc_id = self.ecx.intern_with_temp_alloc(ty, |ecx, dest| {
-                //         for (field_index, op) in fields.iter().copied().enumerate() {
-                //             let field_dest = ecx.project_field(dest, field_index)?;
-                //             ecx.copy_op(op, &field_dest)?;
-                //         }
+                } else if matches!(kind, AggregateTy::Array) {
+                    let mut mplace = None;
+                    let alloc_id = self.ecx.intern_with_temp_alloc(ty, |ecx, dest| {
+                        for (field_index, op) in fields.iter().copied().enumerate() {
+                            let field_dest = ecx.project_field(dest, field_index)?;
+                            ecx.copy_op(op, &field_dest)?;
+                        }
 
-                //         let place = dest.assert_mem_place();
-                //         mplace.replace(place);
-                //         Ok(())
-                //     }).ok()?;
-                //     let GlobalAlloc::Memory(_alloc) = self.tcx.global_alloc(alloc_id) else {
-                //         bug!()
-                //     };
-                //     let mplace = mplace.unwrap();
-                //     debug!(?mplace);
-                //     return Some(mplace.into());
+                        let place = dest.assert_mem_place();
+                        mplace.replace(place);
+                        Ok(())
+                    }).ok()?;
+                    let GlobalAlloc::Memory(_alloc) = self.tcx.global_alloc(alloc_id) else {
+                        bug!()
+                    };
+                    let mplace = mplace.unwrap();
+                    debug!(?mplace);
+                    return Some(mplace.into());
                 } else if matches!(ty.abi, Abi::Scalar(..) | Abi::ScalarPair(..)) {
                     let dest = self.ecx.allocate(ty, MemoryKind::Stack).ok()?;
                     let variant_dest = if let Some(variant) = variant {
