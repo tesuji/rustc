@@ -418,8 +418,10 @@ impl<'body, 'tcx> VnState<'body, 'tcx> {
                             ecx.copy_op(op, &field_dest)?;
                         }
 
-                        let place = dest.assert_mem_place();
-                        mplace.replace(place);
+                        let dest = dest.assert_mem_place();
+                        //ecx.alloc_mark_immutable(dest.ptr().provenance.unwrap().alloc_id()).unwrap();
+                        let dest = dest.map_provenance(|prov| prov.as_immutable());
+                        mplace.replace(dest);
                         Ok(())
                     }).ok()?;
                     let GlobalAlloc::Memory(_alloc) = self.tcx.global_alloc(alloc_id) else {
