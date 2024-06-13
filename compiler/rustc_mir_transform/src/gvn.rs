@@ -418,9 +418,7 @@ impl<'body, 'tcx> VnState<'body, 'tcx> {
                             ecx.copy_op(op, &field_dest)?;
                         }
 
-                        let dest = dest.assert_mem_place();
-                        //ecx.alloc_mark_immutable(dest.ptr().provenance.unwrap().alloc_id()).unwrap();
-                        let dest = dest.map_provenance(|prov| prov.as_immutable());
+                        let dest = dest.assert_mem_place().map_provenance(|prov| prov.as_immutable());
                         mplace.replace(dest);
                         Ok(())
                     }).ok()?;
@@ -1388,6 +1386,7 @@ impl<'tcx> MutVisitor<'tcx> for VnState<'_, 'tcx> {
                 .as_local()
                 .and_then(|local| self.locals[local])
                 .or_else(|| self.simplify_rvalue(rvalue, location));
+            debug!(?value);
             let Some(value) = value else { return };
 
             if let Some(const_) = self.try_as_constant(value) {
