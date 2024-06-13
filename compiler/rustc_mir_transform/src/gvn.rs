@@ -1258,6 +1258,7 @@ impl<'body, 'tcx> VnState<'body, 'tcx> {
     }
 }
 
+#[instrument(level = "trace", skip(ecx), ret)]
 fn op_to_prop_const<'tcx>(
     ecx: &mut InterpCx<'tcx, DummyMachine>,
     op: &OpTy<'tcx>,
@@ -1338,10 +1339,6 @@ impl<'tcx> VnState<'_, 'tcx> {
         }
 
         let op = self.evaluated[index].as_ref()?;
-        if op.layout.is_unsized() {
-            // Do not attempt to propagate unsized locals.
-            return None;
-        }
 
         let value = op_to_prop_const(&mut self.ecx, op)?;
 
