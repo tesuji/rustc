@@ -2125,6 +2125,25 @@ impl<T> From<T> for Option<T> {
     }
 }
 
+#[stable(since = "1.12.0", feature = "option_from")]
+impl<'a, T: Deref> From<Option<&'a T>> for Option<&'a T::Target> {
+    /// Moves `val` into a new [`Some`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let o: Option<u8> = Option::from(67);
+    ///
+    /// assert_eq!(Some(67), o);
+    /// ```
+    fn from(val: Option<&'a T>) -> Option<&'a T::Target> {
+        match &val {
+            Some(t) => Some(&*t),
+            None => None,
+        }
+    }
+}
+
 #[stable(feature = "option_ref_from_ref_option", since = "1.30.0")]
 impl<'a, T> From<&'a Option<T>> for Option<&'a T> {
     /// Converts from `&Option<T>` to `Option<&T>`.
