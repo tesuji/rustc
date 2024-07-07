@@ -148,12 +148,21 @@ pub trait Deref {
 }
 
 #[stable(feature = "rust1", since = "1.0.0")]
-impl<T: ?Sized> Deref for &T {
+impl<T: ?Sized + !Deref> Deref for &T {
     type Target = T;
 
     #[rustc_diagnostic_item = "noop_method_deref"]
     fn deref(&self) -> &T {
         *self
+    }
+}
+
+#[stable(feature = "rust1", since = "1.0.0")]
+impl<T: ?Sized + Deref> Deref for &T {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &**self
     }
 }
 
